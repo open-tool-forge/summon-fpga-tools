@@ -46,7 +46,7 @@ brew install cmake python boost boost-python3 qt5
  or
 * `wget https://github.com/esden/summon-fpga-tools/zipball/master; unzip master`
 * `cd summon-fpga-tools`
-* `./summon-fpga-tools`
+* `./summon-fpga-tools.sh`
 * `export PATH=~/sff/bin`
 * Profit
 
