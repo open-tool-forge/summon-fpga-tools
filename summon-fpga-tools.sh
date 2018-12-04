@@ -16,11 +16,12 @@
 # Requirements (example is for Debian, replace package names as needed):
 #
 # apt-get install flex bison libgmp3-dev libmpfr-dev libncurses5-dev \
-# libmpc-dev autoconf texinfo build-essential libftdi-dev zlib1g-dev git
+# libmpc-dev autoconf texinfo build-essential libftdi-dev zlib1g-dev git \
+# gperf
 #
 # Or on Ubuntu Maverick give `apt-get build-dep gcc-4.5` a try.
 #
-# brew install cmake python boost boost-python3 qt5
+# brew install cmake python boost boost-python3 qt5 gperf
 #
 
 # Stop if any command fails
@@ -47,6 +48,8 @@ NEXTPNR_EN=1
 NEXTPNR_GIT=master
 YOSYS_EN=1
 YOSYS_GIT=
+IVERILOG_EN=1
+IVERILOG_GIT=v10-branch
 
 # Override automatic detection of cpus to compile on
 CPUS=
@@ -82,6 +85,9 @@ while [ $# -gt 0 ]; do
 		YOSYS_GIT=*)
 		YOSYS_GIT=$(echo $1 | sed 's,^YOSYS_GIT=,,')
 		;;
+		IVERILOG_GIT=*)
+		IVERILOG_GIT=$(echo $1 | sed 's,^IVERILOG_GIT=,,')
+		;;
 		CPUS=*)
 		CPUS=$(echo $1 | sed 's,^CPUS=,,')
 		;;
@@ -102,11 +108,15 @@ DEFAULT_ICESTORM=
 DEFAULT_ARACHNEPNR=
 DEFAULT_NEXTPNR=
 DEFAULT_YOSYS=yosys-0.8
+DEFAULT_IVERILOG_VERSION=v10_2
+DEFAULT_IVERILOG=iverilog-${DEFAULT_IVERILOG_VERSION}
 
 ICESTORM=${ICESTORM:-${DEFAULT_ICESTORM}}
 ARACHNEPNR=${ARACHNEPNR:-${DEFAULT_ARACHNEPNR}}
 NEXTPNR=${NEXTPNR:-${DEFAULT_NEXTPNR}}
-YOSYS=${YOSYS:-${DEFAULT_YOSYS}}
+YOSYS=${YOSYS:-${DEFAULT_YOSYS}}${IVERILOG}
+IVERILOG_VERSION=${IVERILOG_VERSION:-${DEFAULT_IVERILOG_VERSION}}
+IVERILOG=${IVERILOG:-${DEFAULT_IVERILOG}}
 
 ##############################################################################
 # Print settings
@@ -124,6 +134,9 @@ echo "NEXTPNR=$NEXTPNR"
 echo "NEXTPNR_GIT=$NEXTPNR_GIT"
 echo "YOSYS=$YOSYS"
 echo "YOSYS_GIT=$YOSYS_GIT"
+echo "IVERILOG_VERSION=$IVERILOG_VERSION"
+echo "IVERILOG=$IVERILOG"
+echo "IVERILOG_GIT=$IVERILOG_GIT"
 echo "CPUS=$CPUS"
 
 ##############################################################################
@@ -210,7 +223,11 @@ function fetch {
     if [ ! -e ${STAMPS}/$1.fetch ]; then
         if [ ! -e ${SOURCES}/$1 ]; then
             log "Downloading $1 sources..."
-	    wget -c ${FETCH_NO_PASSIVE} ${FETCH_NO_CERTCHECK} $2 && touch ${STAMPS}/$1.fetch
+			if [ "x$3" != "x" ]; then
+				wget -c ${FETCH_NO_PASSIVE} ${FETCH_NO_CERTCHECK} -O $3 $2 && touch ${STAMPS}/$1.fetch
+			else
+				wget -c ${FETCH_NO_PASSIVE} ${FETCH_NO_CERTCHECK} $2 && touch ${STAMPS}/$1.fetch
+			fi
         fi
     fi
 }
@@ -342,6 +359,14 @@ if [ ${YOSYS_EN} != 0 ]; then
 	fi
 fi
 
+if [ ${IVERILOG_EN} != 0 ]; then
+	if [ "x${IVERILOG_GIT}" == "x" ]; then
+		fetch ${IVERILOG} https://github.com/steveicarus/iverilog/archive/${IVERILOG_VERSION}.tar.gz ${IVERILOG}.tar.gz
+	else
+		clone iverilog ${IVERILOG_GIT} git://github.com/steveicarus/iverilog.git
+	fi
+fi
+
 ##############################################################################
 # Build tools
 ##############################################################################
@@ -405,4 +430,19 @@ if [ ! -e ${STAMPS}/${YOSYS}.build ]; then
     rm -rf yosys-${YOSYS}
 fi
 
-
+if [ ! -e ${STAMPS}/${IVERILOG}.build ]; then
+    unpack ${IVERILOG}
+    cd ${IVERILOG}
+    log "Running autogen for ${IVERILOG}"
+    sh ./autoconf.sh
+    cd ../build
+    log "Configuring ${IVERILOG}"
+    ../${IVERILOG}/configure --prefix=${PREFIX}
+    log "Building ${IVERILOG}"
+    make ${MAKEFLAGS}
+    install ${IVERILOG} install
+    cd ..
+    log "Cleaning up ${IVERILOG}"
+    touch ${STAMPS}/${IVERILOG}.build
+    rm -rf build/* ${IVERILOG}
+fi
