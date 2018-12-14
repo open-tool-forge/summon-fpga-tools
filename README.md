@@ -15,7 +15,7 @@ More tools will be added over time. The current candidates are:
 * verilator
 * gtkwave
 
-This script is intended to not require super user privileges and installs all the tools into `${HOME}/sff` directory. Obviously you will need some rights to install the dependencies provided by your operating system.
+This script is intended to not require super user privileges and installs all the tools into `${HOME}/sft` directory. Obviously you will need some rights to install the dependencies provided by your operating system.
 
 As many of the tools don't have official release tarballs, we are currently building the newest `master` releases of all the tools except Yosys. Yosys is currently the only tool that has official release tarballs, and we stick to them for now. If you want to build Yosys from the bleeding cutting edge run the build script as follows: `./summon-fpga-tools.sh YOSYS_GIT=master`
 
@@ -47,7 +47,7 @@ brew install cmake python boost boost-python3 qt5
 * `wget https://github.com/esden/summon-fpga-tools/zipball/master; unzip master`
 * `cd summon-fpga-tools`
 * `./summon-fpga-tools.sh`
-* `export PATH=~/sff/bin`
+* `export PATH=~/sft/bin`
 * Profit
 
 ## Command line options
@@ -56,7 +56,7 @@ You can suffix the script call with the following variable parameters:
 
 ### `PREFIX=`
 
-By default the installation prefix is `${HOME}/sff` you can change it to `/usr` or `/usr/local` then the binaries will be installed into `${HOME}/sff/bin`, `/usr/bin` or `/usr/local/bin` respectively.
+By default the installation prefix is `${HOME}/sft` you can change it to `/usr` or `/usr/local` then the binaries will be installed into `${HOME}/sft/bin`, `/usr/bin` or `/usr/local/bin` respectively.
 
 ### `SUDO=`
 

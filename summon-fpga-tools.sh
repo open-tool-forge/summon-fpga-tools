@@ -32,7 +32,7 @@ set -e
 # You probably want to customize those
 # You can also pass them as parameters to the script
 ##############################################################################
-PREFIX=${HOME}/sff	# Install location of your final fpga tools
+PREFIX=${HOME}/sft	# Install location of your final fpga tools
 # We do not support MacPorts only homebrew for the time being...
 #DARWIN_OPT_PATH=/usr/local	# Path in which MacPorts or Fink is installed
 # Set to 'sudo' if you need superuser privileges while installing
@@ -258,7 +258,7 @@ function clone {
         git clone ${GIT_URL} ${NAME}-${GIT_SHA}
         cd ${NAME}-${GIT_SHA}
         log "Checking out the revision ${GIT_REF} with the SHA ${GIT_SHA} ..."
-        git checkout -b sff-branch ${GIT_SHA}
+        git checkout -b sft-branch ${GIT_SHA}
 	if [ "x${POST_CLONE}" != "x" ]; then
 		log "Running post clone code for ${NAME}-${GIT_SHA} ..."
 		${POST_CLONE}
