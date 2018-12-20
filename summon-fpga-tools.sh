@@ -47,7 +47,7 @@ ARACHNEPNR_GIT=master
 NEXTPNR_EN=1
 NEXTPNR_GIT=master
 YOSYS_EN=1
-YOSYS_GIT=
+YOSYS_GIT=master
 IVERILOG_EN=1
 IVERILOG_GIT=v10-branch
 
@@ -420,14 +420,22 @@ fi
 
 if [ ! -e ${STAMPS}/${YOSYS}.build ]; then
     unpack ${YOSYS}
-    cd yosys-${YOSYS}
+    if [ "x${YOSYS_GIT}" == "x" ]; then
+        cd yosys-${YOSYS}
+    else
+        cd ${YOSYS}
+    fi
     log "Building ${YOSYS}"
     make ${MAKEFLAGS} PREFIX=${PREFIX}
     install ${YOSYS} PREFIX=${PREFIX} install
     cd ..
     log "Cleaning up ${YOSYS}"
     touch ${STAMPS}/${YOSYS}.build
-    rm -rf yosys-${YOSYS}
+    if [ "x${YOSYS_GIT}" == "x" ]; then
+        rm -rf yosys-${YOSYS}
+    else
+        rm -rf ${YOSYS}
+    fi
 fi
 
 if [ ! -e ${STAMPS}/${IVERILOG}.build ]; then
