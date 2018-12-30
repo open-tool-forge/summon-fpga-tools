@@ -26,10 +26,10 @@ You will need to install the following dependencies to be able to run this scrip
 ### Debian/Ubuntu
 
 ```
-sudo apt install build-essential clang bison flex libreadline-dev \
-                 gawk tcl-dev libffi-dev git mercurial graphviz   \
-                 xdot pkg-config python python3 libftdi-dev \
-                 qt5-default python3-dev libboost-dev
+sudo apt install build-essential clang bison flex libreadline-dev gawk \
+                 tcl-dev libffi-dev git mercurial graphviz xdot pkg-config \
+                 python python3 libftdi-dev qt5-default libqt5opengl5-dev \
+                 python3-dev libboost-all-dev git
 ```
 
 ### Mac OS
@@ -37,7 +37,7 @@ sudo apt install build-essential clang bison flex libreadline-dev \
 XCode with command line tools.
 
 ```
-brew install cmake python boost boost-python3 qt5
+brew install cmake python boost boost-python3 qt5 git libftdi bison gperf
 ```
 
 ## To compile the ARM toolchain for barebone ARM devices:
@@ -88,6 +88,17 @@ $ ./summon-fpga-tools.sh CPUS=5
 ```
 
 This will run the script with 5 CPUs on your host machine resulting in calling all make commands with `-j6`.
+
+## Troubleshooting
+
+**I am running iceprog and the programmer is not being detected**
+
+* Check if the device is being detected by the kernel with 'lsusb' it will either show up as a Future Electronics device or the name of the programmer vendor.
+* If the device is being detected by the kernel you might not have permissions to access the device. If you run `sudo iceprog ...` and the device is decected you can give yourself permissions by creating a udev file at: `/etc/udev/rules.d/53-lattice-ftdi.rules` and adding the following line in that file:
+```
+ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6010", MODE="0660", GROUP="plugdev", TAG+="uaccess"
+```
+After adding that file you need to at least replug the programmer or even reload the udev rules.
 
 ## Questions:
 
