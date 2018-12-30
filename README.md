@@ -40,7 +40,7 @@ XCode with command line tools.
 brew install cmake python boost boost-python3 qt5 git libftdi bison gperf
 ```
 
-## To compile the ARM toolchain for barebone ARM devices:
+## To compile the open source FPGA tools:
 
 * `git clone https://github.com/esden/summon-fpga-tools.git`
  or
