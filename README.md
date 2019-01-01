@@ -4,14 +4,14 @@ This repository contains a simple but flexible script that builds a open-source 
 
 * Yosys
 * nextpnr-ice40
+* nextpnr-ecp5
 * arachne-pnr
 * icestorm
+* prj-trellis
 * icarus-verilog
 
 More tools will be added over time. The current candidates are:
 
-* prj-trellis
-* nextpnr-ecp5
 * verilator
 * gtkwave
 
