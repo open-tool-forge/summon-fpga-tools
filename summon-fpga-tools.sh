@@ -42,6 +42,8 @@ QUIET=0
 # Set to 'master' or a git revision number to use instead of stable version
 ICESTORM_EN=1
 ICESTORM_GIT=master
+PRJTRELLIS_EN=1
+PRJTRELLIS_GIT=master
 ARACHNEPNR_EN=1
 ARACHNEPNR_GIT=master
 NEXTPNR_EN=1
@@ -76,6 +78,9 @@ while [ $# -gt 0 ]; do
 		ICESTORM_GIT=*)
 		ICESTORM_GIT=$(echo $1 | sed 's,^ICESTORM_GIT=,,')
 		;;
+	    PRJTRELLIS_GIT=*)
+		PRJTRELLIS_GIT=$(echo $1 | sed 's,^PRJTRELLIS_GIT=,,')
+		;;
 		ARACHNEPNR_GIT=*)
 		ARACHNEPNR_GIT=$(echo $1 | sed 's,^ARACHNEPNR_GIT=,,')
 		;;
@@ -105,6 +110,7 @@ done
 ##############################################################################
 
 DEFAULT_ICESTORM=
+DEFAULT_PRJTRELLIS=
 DEFAULT_ARACHNEPNR=
 DEFAULT_NEXTPNR=
 DEFAULT_YOSYS=yosys-0.8
@@ -128,6 +134,8 @@ echo "SUDO=$SUDO"
 echo "QUIET=$QUIET"
 echo "ICESTORM=$ICESTORM"
 echo "ICESTORM_GIT=$ICESTORM_GIT"
+echo "PRJTRELLIS=$PRJTRELLIS"
+echo "PRJTRELLIS_GIT=$PRJTRELLIS_GIT"
 echo "ARACHNEPNR=$ARACHNEPNR"
 echo "ARACHNEPNR_GIT=$ARACHNEPNR_GIT"
 echo "NEXTPNR=$NEXTPNR"
@@ -158,6 +166,7 @@ fi
 echo "${CPUS} cpu's detected running make with '${PARALLEL}' flag"
 
 ICESTORMFLAGS=
+PRJTRELLISFLAGS=
 ARACHNEPNRFLAGS=
 NEXTPNRFLAGS=
 YOSYSFLAGS=
@@ -333,6 +342,16 @@ if [ ${ICESTORM_EN} != 0 ]; then
 	fi
 fi
 
+if [ ${PRJTRELLIS_EN} != 0 ]; then
+	if [ "x${PRJTRELLIS_GIT}" == "x" ]; then
+		log "There is no prjtrellis stable release download server yet!"
+		exit 1
+		#fetch ${PRJTRELLIS} git://github.com/SymbiFlow/prjtrellis/archive/${PRJTRELLIS}.tar.bz2
+	else
+		clone prjtrellis ${PRJTRELLIS_GIT} git://github.com/SymbiFlow/prjtrellis.git
+	fi
+fi
+
 if [ ${ARACHNEPNR_EN} != 0 ]; then
 	if [ "x${ARACHNEPNR_GIT}" == "x" ]; then
 		log "There is no arachne-pnr stable release download server yet!"
@@ -345,7 +364,7 @@ fi
 
 if [ ${NEXTPNR_EN} != 0 ]; then
 	if [ "x${NEXTPNR_GIT}" == "x" ]; then
-		log "There is no arachne-pnr stable release download server yet!"
+		log "There is no nextpnr stable release download server yet!"
 		exit 1
 		#fetch ${NEXTPNR} https://github.com/YosysHQ/nextpnr/archive/${NEXTPNR}.tar.bz2
 	else
@@ -391,6 +410,30 @@ if [ ! -e ${STAMPS}/${ICESTORM}.build ]; then
     rm -rf ${ICESTORM}
 fi
 
+if [ ! -e ${STAMPS}/${PRJTRELLIS}.build ]; then
+    unpack ${PRJTRELLIS}
+    cd ${PRJTRELLIS}/libtrellis
+    log "Building ${PRJTRELLIS}"
+	cmake -DCMAKE_INSTALL_PREFIX=${PREFIX} .
+    make ${MAKEFLAGS} PREFIX=${PREFIX}
+    install ${PRJTRELLIS} PREFIX=${PREFIX} install
+	${SUDO} mkdir -p ${PREFIX}/share/trellis/libtrellis
+	${SUDO} mkdir -p ${PREFIX}/share/trellis/timing/util
+	${SUDO} mkdir -p ${PREFIX}/share/trellis/util/common
+	${SUDO} mkdir -p ${PREFIX}/share/trellis/util/fuzz
+	${SUDO} mkdir -p ${PREFIX}/share/trellis/tools
+	${SUDO} cp pytrellis.so ${PREFIX}/share/trellis/libtrellis/pytrellis.so
+	${SUDO} cp ../timing/util/*.py ${PREFIX}/share/trellis/timing/util
+	${SUDO} cp ../util/common/*.py ${PREFIX}/share/trellis/util/common
+	${SUDO} cp ../util/fuzz/*.py ${PREFIX}/share/trellis/util/fuzz
+	${SUDO} cp ../tools/bit_to_svf.py ${PREFIX}/share/trellis/tools/bit_to_svf.py
+	${SUDO} git clone git://github.com/SymbiFlow/prjtrellis-db ${PREFIX}/share/trellis/database
+    cd ../..	
+    log "Cleaning up ${PRJTRELLIS}"
+    touch ${STAMPS}/${PRJTRELLIS}.build
+    rm -rf ${PRJTRELLIS}
+fi
+
 if [ ! -e ${STAMPS}/${ARACHNEPNR}.build ]; then
     unpack ${ARACHNEPNR}
     cd ${ARACHNEPNR}
@@ -405,17 +448,18 @@ fi
 
 if [ ! -e ${STAMPS}/${NEXTPNR}.build ]; then
     unpack ${NEXTPNR}
-    cd build
-    log "Configuring ${NEXTPNR}-ice40"
+    cd build	
+    log "Configuring ${NEXTPNR}-generic, ${NEXTPNR}-ice40 and ${NEXTPNR}-ecp5"
     CMAKE_PREFIX_PATH=${QT5_PREFIX:-${QT5_PREFIX}/lib/cmake/Qt5}
-    cmake -DARCH=ice40 -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+    cmake -DARCH=generic\;ice40\;ecp5 -DCMAKE_INSTALL_PREFIX=${PREFIX} \
     	-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} \
-    	-DICEBOX_ROOT=${PREFIX}/share/icebox ../${NEXTPNR}
-    log "Building ${NEXTPNR}-ice40"
+    	-DICEBOX_ROOT=${PREFIX}/share/icebox \
+    	-DTRELLIS_ROOT=${PREFIX}/share/trellis ../${NEXTPNR}
+    log "Building ${NEXTPNR}-generic, ${NEXTPNR}-ice40 and ${NEXTPNR}-ecp5"
     make ${MAKEFLAGS}
     install ${NEXTPNR} install
-    cd ..
-    log "Cleaning up ${NEXTPNR}-ice40"
+    cd ..	
+    log "Cleaning up ${NEXTPNR}-generic, ${NEXTPNR}-ice40 and ${NEXTPNR}-ecp5"
     touch ${STAMPS}/${NEXTPNR}.build
     rm -rf build/* ${NEXTPNR}
 fi
