@@ -29,7 +29,7 @@ You will need to install the following dependencies to be able to run this scrip
 sudo apt install build-essential clang bison flex libreadline-dev gawk \
                  tcl-dev libffi-dev git mercurial graphviz xdot pkg-config \
                  python python3 libftdi-dev qt5-default libqt5opengl5-dev \
-                 python3-dev libboost-all-dev git
+                 python3-dev libboost-all-dev git cmake
 ```
 
 ### Mac OS
