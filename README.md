@@ -26,11 +26,12 @@ You will need to install the following dependencies to be able to run this scrip
 ### Debian/Ubuntu/Raspbian
 
 ```
-sudo apt-get install git mercurial build-essential bison clang cmake flex \
-                     gawk graphviz xdot libboost-all-dev libeigen3-dev \
-                     libffi-dev libftdi-dev libreadline-dev pkg-config \
-                     python python3 python3-dev tcl-dev autoconf gperf \
-                     qt5-default libqt5opengl5-dev
+sudo apt-get install git mercurial build-essential bison clang cmake \
+                     flex gawk graphviz xdot libboost-all-dev \
+                     libeigen3-dev libffi-dev libftdi-dev libgmp3-dev \
+                     libmpfr-dev libncurses5-dev libmpc-dev \
+                     libreadline-dev zlib1g-dev pkg-config python \
+                     python3 python3-dev tcl-dev autoconf gperf \
 ```
 
 ### Mac OS

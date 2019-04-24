@@ -15,11 +15,12 @@
 #
 # Requirements (example is for Debian, replace package names as needed):
 #
-# apt-get install git mercurial build-essential bison clang cmake flex \
-#                 gawk graphviz xdot libboost-all-dev libeigen3-dev \
-#                 libffi-dev libftdi-dev libreadline-dev pkg-config \
-#                 python python3 python3-dev tcl-dev autoconf gperf \
-#                 qt5-default libqt5opengl5-dev
+# sudo apt-get install git mercurial build-essential bison clang cmake \
+#                      flex gawk graphviz xdot libboost-all-dev \
+#                      libeigen3-dev libffi-dev libftdi-dev libgmp3-dev \
+#                      libmpfr-dev libncurses5-dev libmpc-dev \
+#                      libreadline-dev zlib1g-dev pkg-config python \
+#                      python3 python3-dev tcl-dev autoconf gperf \
 #
 # Or on Ubuntu Maverick give `apt-get build-dep gcc-4.5` a try.
 #
