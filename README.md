@@ -23,13 +23,14 @@ As many of the tools don't have official release tarballs, we are currently buil
 
 You will need to install the following dependencies to be able to run this script.
 
-### Debian/Ubuntu
+### Debian/Ubuntu/Raspbian
 
 ```
-sudo apt install build-essential clang bison flex libreadline-dev gawk \
-                 tcl-dev libffi-dev git mercurial graphviz xdot pkg-config \
-                 python python3 libftdi-dev qt5-default libqt5opengl5-dev \
-                 python3-dev libboost-all-dev git cmake
+sudo apt-get install git mercurial build-essential bison clang cmake flex \
+                     gawk graphviz xdot libboost-all-dev libeigen3-dev \
+                     libffi-dev libftdi-dev libreadline-dev pkg-config \
+                     python python3 python3-dev tcl-dev autoconf gperf \
+                     qt5-default libqt5opengl5-dev
 ```
 
 ### Mac OS
@@ -80,6 +81,11 @@ in some cases) you can set this variable to 1.
 Overrides the autodetection of CPU cores on the host machine. This option
 is translated into the `-j$CPUS+1` option to the make command when running
 the script.
+
+### `NEXTPNR_BUILD_GUI=`
+
+If building for a headless machine, set to `off` and skip the QT
+dependencies above.
 
 ## Example:
 

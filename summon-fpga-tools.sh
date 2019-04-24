@@ -15,9 +15,11 @@
 #
 # Requirements (example is for Debian, replace package names as needed):
 #
-# apt-get install flex bison libgmp3-dev libmpfr-dev libncurses5-dev \
-# libmpc-dev autoconf texinfo build-essential libftdi-dev zlib1g-dev git \
-# gperf cmake
+# apt-get install git mercurial build-essential bison clang cmake flex \
+#                 gawk graphviz xdot libboost-all-dev libeigen3-dev \
+#                 libffi-dev libftdi-dev libreadline-dev pkg-config \
+#                 python python3 python3-dev tcl-dev autoconf gperf \
+#                 qt5-default libqt5opengl5-dev
 #
 # Or on Ubuntu Maverick give `apt-get build-dep gcc-4.5` a try.
 #
@@ -46,6 +48,7 @@ ARACHNEPNR_EN=1
 ARACHNEPNR_GIT=master
 NEXTPNR_EN=1
 NEXTPNR_GIT=master
+NEXTPNR_BUILD_GUI=on
 YOSYS_EN=1
 YOSYS_GIT=master
 IVERILOG_EN=1
@@ -90,6 +93,9 @@ while [ $# -gt 0 ]; do
 		;;
 		CPUS=*)
 		CPUS=$(echo $1 | sed 's,^CPUS=,,')
+		;;
+		NEXTPNR_BUILD_GUI=*)
+		NEXTPNR_BUILD_GUI=$(echo $1 | sed 's,^NEXTPNR_BUILD_GUI=,,')
 		;;
 		*)
 		echo "Unknown parameter: $1"
@@ -410,6 +416,7 @@ if [ ! -e ${STAMPS}/${NEXTPNR}.build ]; then
     CMAKE_PREFIX_PATH=${QT5_PREFIX:-${QT5_PREFIX}/lib/cmake/Qt5}
     cmake -DARCH=ice40 -DCMAKE_INSTALL_PREFIX=${PREFIX} \
     	-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} \
+	-DBUILD_GUI=${NEXTPNR_BUILD_GUI} \
     	-DICEBOX_ROOT=${PREFIX}/share/icebox ../${NEXTPNR}
     log "Building ${NEXTPNR}-ice40"
     make ${MAKEFLAGS}
