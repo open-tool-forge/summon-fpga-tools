@@ -49,7 +49,8 @@ PRJTRELLIS_EN=1
 PRJTRELLIS_GIT=master
 ARACHNEPNR_EN=1
 ARACHNEPNR_GIT=master
-NEXTPNR_EN=1
+NEXTPNR_ICE40_EN=1
+NEXTPNR_ECP5_EN=1
 NEXTPNR_GIT=master
 NEXTPNR_BUILD_GUI=on
 YOSYS_EN=1
@@ -370,9 +371,9 @@ if [ ${ARACHNEPNR_EN} != 0 ]; then
 	fi
 fi
 
-if [ ${NEXTPNR_EN} != 0 ]; then
+if [ ${NEXTPNR_ICE40_EN} != 0 ] || [ ${NEXTPNR_ECP5_EN} != 0 ]; then
 	if [ "x${NEXTPNR_GIT}" == "x" ]; then
-		log "There is no arachne-pnr stable release download server yet!"
+		log "There is no nextpnr stable release download server yet!"
 		exit 1
 		#fetch ${NEXTPNR} https://github.com/YosysHQ/nextpnr/archive/${NEXTPNR}.tar.bz2
 	else
@@ -447,17 +448,18 @@ fi
 if [ ! -e ${STAMPS}/${NEXTPNR}.build ]; then
     unpack ${NEXTPNR}
     cd build
-    log "Configuring ${NEXTPNR}-ice40"
+    log "Configuring ${NEXTPNR}"
     CMAKE_PREFIX_PATH=${QT5_PREFIX:-${QT5_PREFIX}/lib/cmake/Qt5}
-    cmake -DARCH=ice40 -DCMAKE_INSTALL_PREFIX=${PREFIX} \
-    	-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} \
-	-DBUILD_GUI=${NEXTPNR_BUILD_GUI} \
-    	-DICEBOX_ROOT=${PREFIX}/share/icebox ../${NEXTPNR}
-    log "Building ${NEXTPNR}-ice40"
+    cmake -DARCH="ice40;ecp5" -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+        -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} \
+        -DBUILD_GUI=${NEXTPNR_BUILD_GUI} \
+        -DTRELLIS_ROOT=${PREFIX} \
+        -DICEBOX_ROOT=${PREFIX}/share/icebox ../${NEXTPNR}
+    log "Building ${NEXTPNR}"
     make ${MAKEFLAGS}
     install ${NEXTPNR} install
     cd ..
-    log "Cleaning up ${NEXTPNR}-ice40"
+    log "Cleaning up ${NEXTPNR}"
     touch ${STAMPS}/${NEXTPNR}.build
     rm -rf build/* ${NEXTPNR}
 fi
