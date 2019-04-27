@@ -274,7 +274,7 @@ function clone {
             rm -rf ${NAME}-${GIT_SHA}
         fi
         log "Cloning ${NAME}-${GIT_SHA} ..."
-        git clone ${GIT_URL} ${NAME}-${GIT_SHA}
+        git clone --recursive ${GIT_URL} ${NAME}-${GIT_SHA}
         cd ${NAME}-${GIT_SHA}
         log "Checking out the revision ${GIT_REF} with the SHA ${GIT_SHA} ..."
         git checkout -b sft-branch ${GIT_SHA}
