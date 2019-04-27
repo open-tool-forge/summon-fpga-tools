@@ -45,6 +45,8 @@ QUIET=0
 # Set to 'master' or a git revision number to use instead of stable version
 ICESTORM_EN=1
 ICESTORM_GIT=master
+PRJTRELLIS_EN=1
+PRJTRELLIS_GIT=master
 ARACHNEPNR_EN=1
 ARACHNEPNR_GIT=master
 NEXTPNR_EN=1
@@ -80,6 +82,9 @@ while [ $# -gt 0 ]; do
 		ICESTORM_GIT=*)
 		ICESTORM_GIT=$(echo $1 | sed 's,^ICESTORM_GIT=,,')
 		;;
+		PRJTRELLIS_GIT=*)
+		PRJTRELLIS_GIT=$(echo $1 | sed 's,^PRJTRELLIS_GIT=,,')
+		;;
 		ARACHNEPNR_GIT=*)
 		ARACHNEPNR_GIT=$(echo $1 | sed 's,^ARACHNEPNR_GIT=,,')
 		;;
@@ -112,6 +117,7 @@ done
 ##############################################################################
 
 DEFAULT_ICESTORM=
+DEFAULT_PRJTRELLIS=
 DEFAULT_ARACHNEPNR=
 DEFAULT_NEXTPNR=
 DEFAULT_YOSYS=yosys-0.8
@@ -119,6 +125,7 @@ DEFAULT_IVERILOG_VERSION=v10_2
 DEFAULT_IVERILOG=iverilog-${DEFAULT_IVERILOG_VERSION}
 
 ICESTORM=${ICESTORM:-${DEFAULT_ICESTORM}}
+PRJTRELLIS=${PRJTRELLIS:-${DEFAULT_PRJTRELLIS}}
 ARACHNEPNR=${ARACHNEPNR:-${DEFAULT_ARACHNEPNR}}
 NEXTPNR=${NEXTPNR:-${DEFAULT_NEXTPNR}}
 YOSYS=${YOSYS:-${DEFAULT_YOSYS}}${IVERILOG}
@@ -135,6 +142,8 @@ echo "SUDO=$SUDO"
 echo "QUIET=$QUIET"
 echo "ICESTORM=$ICESTORM"
 echo "ICESTORM_GIT=$ICESTORM_GIT"
+echo "PRJTRELLIS=$PRJTRELLIS"
+echo "PRJTRELLIS_GIT=$PRJTRELLIS_GIT"
 echo "ARACHNEPNR=$ARACHNEPNR"
 echo "ARACHNEPNR_GIT=$ARACHNEPNR_GIT"
 echo "NEXTPNR=$NEXTPNR"
@@ -165,6 +174,7 @@ fi
 echo "${CPUS} cpu's detected running make with '${PARALLEL}' flag"
 
 ICESTORMFLAGS=
+PRJTRELLISFLAGS=
 ARACHNEPNRFLAGS=
 NEXTPNRFLAGS=
 YOSYSFLAGS=
@@ -340,6 +350,16 @@ if [ ${ICESTORM_EN} != 0 ]; then
 	fi
 fi
 
+if [ ${PRJTRELLIS_EN} != 0 ]; then
+	if [ "x${PRJTRELLIS_GIT}" == "x" ]; then
+		log "There is no prjtrellis stable release download server yet!"
+		exit 1
+		#fetch ${PRJTRELLIS} https://github.com/SymbiFlow/prjtrellis/archive/${PRJTRELLIS}.tar.bz2
+	else
+		clone prjtrellis ${PRJTRELLIS_GIT} git://github.com/SymbiFlow/prjtrellis.git
+	fi
+fi
+
 if [ ${ARACHNEPNR_EN} != 0 ]; then
 	if [ "x${ARACHNEPNR_GIT}" == "x" ]; then
 		log "There is no arachne-pnr stable release download server yet!"
@@ -396,6 +416,20 @@ if [ ! -e ${STAMPS}/${ICESTORM}.build ]; then
     log "Cleaning up ${ICESTORM}"
     touch ${STAMPS}/${ICESTORM}.build
     rm -rf ${ICESTORM}
+fi
+
+if [ ! -e ${STAMPS}/${PRJTRELLIS}.build ]; then
+    unpack ${PRJTRELLIS}
+    cd ${PRJTRELLIS}/libtrellis
+    log "Configuring ${PRJTRELLIS}"
+    cmake -DCMAKE_INSTALL_PREFIX=${PREFIX} .
+    log "Building ${PRJTRELLIS}"
+    make ${MAKEFLAGS}
+    install ${PRJTRELLIS} install
+    cd ../..
+    log "Cleaning up ${PRJTRELLIS}"
+    touch ${STAMPS}/${PRJTRELLIS}.build
+    rm -rf build/* ${PRJTRELLIS}
 fi
 
 if [ ! -e ${STAMPS}/${ARACHNEPNR}.build ]; then

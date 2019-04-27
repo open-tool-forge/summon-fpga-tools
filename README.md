@@ -3,6 +3,7 @@
 This repository contains a simple but flexible script that builds a open-source FPGA tools. These tools consist from:
 
 * Yosys
+* prjtrellis
 * nextpnr-ice40
 * arachne-pnr
 * icestorm
@@ -10,7 +11,6 @@ This repository contains a simple but flexible script that builds a open-source 
 
 More tools will be added over time. The current candidates are:
 
-* prj-trellis
 * nextpnr-ecp5
 * verilator
 * gtkwave
