@@ -428,6 +428,10 @@ if [ ! -e ${STAMPS}/${PRJTRELLIS}.build ]; then
     make ${MAKEFLAGS}
     install ${PRJTRELLIS} install
     cd ../..
+    log "Running post install tasks for ${PRJTRELLIS}"
+    cd ${PREFIX}/share/trellis
+    ln -sf ../../lib/trellis libtrellis
+    cd -
     log "Cleaning up ${PRJTRELLIS}"
     touch ${STAMPS}/${PRJTRELLIS}.build
     rm -rf build/* ${PRJTRELLIS}
@@ -453,7 +457,7 @@ if [ ! -e ${STAMPS}/${NEXTPNR}.build ]; then
     cmake -DARCH="ice40;ecp5" -DCMAKE_INSTALL_PREFIX=${PREFIX} \
         -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} \
         -DBUILD_GUI=${NEXTPNR_BUILD_GUI} \
-        -DTRELLIS_ROOT=${PREFIX} \
+        -DTRELLIS_ROOT=${PREFIX}/share/trellis \
         -DICEBOX_ROOT=${PREFIX}/share/icebox ../${NEXTPNR}
     log "Building ${NEXTPNR}"
     make ${MAKEFLAGS}
