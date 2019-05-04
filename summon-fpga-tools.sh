@@ -42,6 +42,8 @@ PREFIX=${HOME}/sft	# Install location of your final fpga tools
 SUDO=
 # Set to 1 to be quieter while running
 QUIET=0
+# default to not being verbose
+VERBOSE=
 # Set to 'master' or a git revision number to use instead of stable version
 ICESTORM_EN=1
 ICESTORM_GIT=master
@@ -55,6 +57,7 @@ NEXTPNR_GIT=master
 NEXTPNR_BUILD_GUI=on
 YOSYS_EN=1
 YOSYS_GIT=master
+YOSYS_CONFIG=
 IVERILOG_EN=1
 IVERILOG_GIT=v10-branch
 
@@ -71,40 +74,23 @@ FETCH_NO_CERTCHECK="--no-check-certificate "
 
 while [ $# -gt 0 ]; do
 	case $1 in
-		PREFIX=*)
-		PREFIX=$(echo $1 | sed 's,^PREFIX=,,')
+		PREFIX=*|\
+		SUDO=*|\
+		QUIET=*|\
+		ICESTORM_GIT=*|\
+		PRJTRELLIS_GIT=*|\
+		ARACHNEPNR_GIT=*|\
+		NEXTPNR_GIT=*|\
+		YOSYS_GIT=*|\
+		YOSYS_CONFIG=*|\
+		IVERILOG_GIT=*|\
+		CPUS=*|\
+		NEXTPNR_BUILD_GUI=*|\
+		VERBOSE=*\
+		)
+		eval $1
 		;;
-		SUDO=*)
-		SUDO=$(echo $1 | sed 's,^SUDO=,,')
-		;;
-		QUIET=*)
-		QUIET=$(echo $1 | sed 's,^QUIET=,,')
-		;;
-		ICESTORM_GIT=*)
-		ICESTORM_GIT=$(echo $1 | sed 's,^ICESTORM_GIT=,,')
-		;;
-		PRJTRELLIS_GIT=*)
-		PRJTRELLIS_GIT=$(echo $1 | sed 's,^PRJTRELLIS_GIT=,,')
-		;;
-		ARACHNEPNR_GIT=*)
-		ARACHNEPNR_GIT=$(echo $1 | sed 's,^ARACHNEPNR_GIT=,,')
-		;;
-		NEXTPNR_GIT=*)
-		NEXTPNR_GIT=$(echo $1 | sed 's,^NEXTPNR_GIT=,,')
-		;;
-		YOSYS_GIT=*)
-		YOSYS_GIT=$(echo $1 | sed 's,^YOSYS_GIT=,,')
-		;;
-		IVERILOG_GIT=*)
-		IVERILOG_GIT=$(echo $1 | sed 's,^IVERILOG_GIT=,,')
-		;;
-		CPUS=*)
-		CPUS=$(echo $1 | sed 's,^CPUS=,,')
-		;;
-		NEXTPNR_BUILD_GUI=*)
-		NEXTPNR_BUILD_GUI=$(echo $1 | sed 's,^NEXTPNR_BUILD_GUI=,,')
-		;;
-		*)
+	  *)
 		echo "Unknown parameter: $1"
 		exit 1
 		;;
@@ -141,6 +127,7 @@ echo "Settings used for this build are:"
 echo "PREFIX=$PREFIX"
 echo "SUDO=$SUDO"
 echo "QUIET=$QUIET"
+echo "VERBOSE=$VERBOSE"
 echo "ICESTORM=$ICESTORM"
 echo "ICESTORM_GIT=$ICESTORM_GIT"
 echo "PRJTRELLIS=$PRJTRELLIS"
@@ -151,6 +138,7 @@ echo "NEXTPNR=$NEXTPNR"
 echo "NEXTPNR_GIT=$NEXTPNR_GIT"
 echo "YOSYS=$YOSYS"
 echo "YOSYS_GIT=$YOSYS_GIT"
+echo "YOSYS_CONFIG=$YOSYS_CONFIG"
 echo "IVERILOG_VERSION=$IVERILOG_VERSION"
 echo "IVERILOG=$IVERILOG"
 echo "IVERILOG_GIT=$IVERILOG_GIT"
@@ -199,6 +187,10 @@ SUMMON_DIR=$(pwd)
 SOURCES=${SUMMON_DIR}/sources
 STAMPS=${SUMMON_DIR}/stamps
 
+
+if [ ${VERBOSE} != 0 ]; then
+     set -x
+fi
 
 ##############################################################################
 # Tool section
@@ -476,7 +468,7 @@ if [ ! -e ${STAMPS}/${YOSYS}.build ]; then
         cd ${YOSYS}
     fi
     log "Building ${YOSYS}"
-    make ${MAKEFLAGS} PREFIX=${PREFIX}
+    make ${MAKEFLAGS} ${YOSYSFLAGS} PREFIX=${PREFIX}
     install ${YOSYS} PREFIX=${PREFIX} install
     cd ..
     log "Cleaning up ${YOSYS}"
