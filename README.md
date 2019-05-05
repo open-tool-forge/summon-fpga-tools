@@ -34,6 +34,33 @@ sudo apt-get install git mercurial build-essential bison clang cmake \
                      python3 python3-dev tcl-dev autoconf gperf \
 ```
 
+### openSUSE
+
+```
+zypper in  patterns-devel-python-devel_python3 \
+           patterns-devel-base-devel_basis \
+           mercurial bison clang cmake \
+           flex gawk graphviz xdotool \
+           eigen3-devel libffi-devel libftdi0-devel \
+           libgmp10 libmpfr6 libncurses5 \
+           ncurses5-devel libmpc3 libreadline6\
+           zlib-devel pkg-config python python3\
+           python3-devel tcl-devel autoconf gperf\
+           libboost_headers1_66_0-devel \
+           libboost_system1_66_0-devel \
+           libboost_serialization1_66_0-devel \
+           libboost_regex1_66_0-devel \
+           libboost_program_options1_66_0-devel \
+           libboost_iostreams1_66_0-devel \
+           libboost_chrono1_66_0-devel \
+           libboost_atomic1_66_0-devel \
+           libboost_filesystem1_66_0-devel \
+           libboost_date_time1_66_0-devel \
+           libboost_thread1_66_0-devel \
+           libboost_python-py3-1_66_0-devel \
+```        
+
+
 ### Mac OS
 
 XCode with command line tools.
