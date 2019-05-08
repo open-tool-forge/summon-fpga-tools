@@ -23,7 +23,7 @@ As many of the tools don't have official release tarballs, we are currently buil
 
 You will need to install the following dependencies to be able to run this script.
 
-### Debian/Ubuntu/Raspbian
+### Debian/Ubuntu/Mint/Raspbian
 
 ```
 sudo apt-get install git mercurial build-essential bison clang cmake \
@@ -32,6 +32,7 @@ sudo apt-get install git mercurial build-essential bison clang cmake \
                      libmpfr-dev libncurses5-dev libmpc-dev \
                      libreadline-dev zlib1g-dev pkg-config python \
                      python3 python3-dev tcl-dev autoconf gperf \
+                     qtbase5-dev libqt5opengl5-dev
 ```
 
 ### openSUSE
