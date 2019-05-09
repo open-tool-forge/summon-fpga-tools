@@ -188,7 +188,7 @@ SOURCES=${SUMMON_DIR}/sources
 STAMPS=${SUMMON_DIR}/stamps
 
 
-if [ ${VERBOSE} != 0 ]; then
+if [ "x${VERBOSE}" != "x" ]; then
      set -x
 fi
 
