@@ -1,4 +1,4 @@
-# Summon-FPGA-TOOLS
+# Summon-FPGA-Tools
 
 This repository contains a simple but flexible script that builds a open-source
 FPGA tools. These tools consist from:
