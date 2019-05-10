@@ -20,11 +20,9 @@ This script is intended to not require super user privileges and installs all
 the tools into `${HOME}/sft` directory. Obviously you will need some rights to
 install the dependencies provided by your operating system.
 
-As many of the tools don't have official release tarballs, we are currently
-building the newest `master` releases of all the tools except Yosys. Yosys is
-currently the only tool that has official release tarballs, and we stick to
-them for now. If you want to build Yosys from the bleeding cutting edge run the
-build script as follows: `./summon-fpga-tools.sh YOSYS_GIT=master`
+As many of the tools don't have official release tarballs, and the tools are
+still in very rapid development we are currently building the newest `master`
+releases of all the tools.
 
 ## Dependencies
 

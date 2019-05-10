@@ -13,18 +13,7 @@
 #
 # TODO: this should be automatically detected and the deps should be installed when needed.
 #
-# Requirements (example is for Debian, replace package names as needed):
-#
-# sudo apt-get install git mercurial build-essential bison clang cmake \
-#                      flex gawk graphviz xdot libboost-all-dev \
-#                      libeigen3-dev libffi-dev libftdi-dev libgmp3-dev \
-#                      libmpfr-dev libncurses5-dev libmpc-dev \
-#                      libreadline-dev zlib1g-dev pkg-config python \
-#                      python3 python3-dev tcl-dev autoconf gperf \
-#
-# Or on Ubuntu Maverick give `apt-get build-dep gcc-4.5` a try.
-#
-# brew install cmake python boost boost-python3 qt5 gperf
+# Requirements are all listed in the accompanying README.md file.
 #
 
 # Stop if any command fails
