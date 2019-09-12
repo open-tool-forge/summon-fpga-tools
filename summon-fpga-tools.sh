@@ -266,6 +266,8 @@ function clone {
 	fi
         log "Removing .git directory from ${NAME}-${GIT_SHA} ..."
         rm -rf .git
+        # save git SHA for later (needed for libtrellis)
+        echo ${GIT_SHA} > .git_sha
         cd ..
         log "Generating source archive for ${NAME}-${GIT_SHA} ..."
         tar cfj ${SOURCES}/${NAME}-${GIT_SHA}.tar.bz2 ${NAME}-${GIT_SHA}
@@ -404,7 +406,9 @@ if [ ! -e ${STAMPS}/${PRJTRELLIS}.build ]; then
     unpack ${PRJTRELLIS}
     cd ${PRJTRELLIS}/libtrellis
     log "Configuring ${PRJTRELLIS}"
-    cmake -DCMAKE_INSTALL_PREFIX=${PREFIX} .
+    # need to set CURRENT_GIT_VERSION or libtrellis will try and fail
+    # to detect the git revision (the .git directory is deleted before archiving)
+    cmake -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCURRENT_GIT_VERSION=$(< ../.git_sha) .
     log "Building ${PRJTRELLIS}"
     make ${MAKEFLAGS}
     install ${PRJTRELLIS} install
