@@ -391,8 +391,6 @@ if [ ! -e build ]; then
     mkdir build
 fi
 
-
-
 if [ ${ICESTORM_EN} != 0 ] && [ ! -e ${STAMPS}/${ICESTORM}.build ]; then
     unpack ${ICESTORM}
     cd ${ICESTORM}
@@ -437,7 +435,7 @@ if [ ${ARACHNEPNR_EN} != 0 ] && [ ! -e ${STAMPS}/${ARACHNEPNR}.build ]; then
     rm -rf ${ARACHNEPNR}
 fi
 
-if [ ${NEXTPNR_EN} != 0 ] && [ ! -e ${STAMPS}/${NEXTPNR}.build ]; then
+if { [ ${NEXTPNR_ICE40_EN} != 0 ] || [ ${NEXTPNR_ECP5_EN} != 0 ]; } && [ ! -e ${STAMPS}/${NEXTPNR}.build ]; then
     unpack ${NEXTPNR}
     cd build
     log "Configuring ${NEXTPNR}"
