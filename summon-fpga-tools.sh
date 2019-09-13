@@ -391,7 +391,9 @@ if [ ! -e build ]; then
     mkdir build
 fi
 
-if [ ! -e ${STAMPS}/${ICESTORM}.build ]; then
+
+
+if [ ${ICESTORM_EN} != 0 ] && [ ! -e ${STAMPS}/${ICESTORM}.build ]; then
     unpack ${ICESTORM}
     cd ${ICESTORM}
     log "Building ${ICESTORM}"
@@ -403,7 +405,7 @@ if [ ! -e ${STAMPS}/${ICESTORM}.build ]; then
     rm -rf ${ICESTORM}
 fi
 
-if [ ! -e ${STAMPS}/${PRJTRELLIS}.build ]; then
+if [ ${PRJTRELLIS_EN} != 0 ] && [ ! -e ${STAMPS}/${PRJTRELLIS}.build ]; then
     unpack ${PRJTRELLIS}
     cd ${PRJTRELLIS}/libtrellis
     log "Configuring ${PRJTRELLIS}"
@@ -423,7 +425,7 @@ if [ ! -e ${STAMPS}/${PRJTRELLIS}.build ]; then
     rm -rf build/* ${PRJTRELLIS}
 fi
 
-if [ ! -e ${STAMPS}/${ARACHNEPNR}.build ]; then
+if [ ${ARACHNEPNR_EN} != 0 ] && [ ! -e ${STAMPS}/${ARACHNEPNR}.build ]; then
     unpack ${ARACHNEPNR}
     cd ${ARACHNEPNR}
     log "Building ${ARACHNEPNR}"
@@ -435,7 +437,7 @@ if [ ! -e ${STAMPS}/${ARACHNEPNR}.build ]; then
     rm -rf ${ARACHNEPNR}
 fi
 
-if [ ! -e ${STAMPS}/${NEXTPNR}.build ]; then
+if [ ${NEXTPNR_EN} != 0 ] && [ ! -e ${STAMPS}/${NEXTPNR}.build ]; then
     unpack ${NEXTPNR}
     cd build
     log "Configuring ${NEXTPNR}"
@@ -454,7 +456,7 @@ if [ ! -e ${STAMPS}/${NEXTPNR}.build ]; then
     rm -rf build/* ${NEXTPNR}
 fi
 
-if [ ! -e ${STAMPS}/${YOSYS}.build ]; then
+if [ ${YOSYS_EN} != 0 ] && [ ! -e ${STAMPS}/${YOSYS}.build ]; then
     unpack ${YOSYS}
     if [ "x${YOSYS_GIT}" == "x" ]; then
         cd yosys-${YOSYS}
@@ -474,7 +476,7 @@ if [ ! -e ${STAMPS}/${YOSYS}.build ]; then
     fi
 fi
 
-if [ ! -e ${STAMPS}/${IVERILOG}.build ]; then
+if [ ${IVERILOG_EN} != 0 ] && [ ! -e ${STAMPS}/${IVERILOG}.build ]; then
     unpack ${IVERILOG}
     cd ${IVERILOG}
     log "Running autogen for ${IVERILOG}"
