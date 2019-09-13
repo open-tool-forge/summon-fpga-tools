@@ -483,6 +483,8 @@ if [ ! -e ${STAMPS}/${IVERILOG}.build ]; then
     ../${IVERILOG}/configure --prefix=${PREFIX}
     log "Building ${IVERILOG}"
     make ${MAKEFLAGS}
+    # workaround - ivl makefile doesn't create this dir itself
+    mkdir -p ${PREFIX}/lib/ivl/
     install ${IVERILOG} install
     cd ..
     log "Cleaning up ${IVERILOG}"
