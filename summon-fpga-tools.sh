@@ -22,40 +22,41 @@ set -e
 ##############################################################################
 # Default settings section
 # You probably want to customize those
-# You can also pass them as parameters to the script
+# You can also pass them as parameters to the script or
+# override them by setting the env var before running the script
 ##############################################################################
-PREFIX=${HOME}/sft	# Install location of your final fpga tools
+PREFIX=${PREFIX:-${HOME}/sft}	# Install location of your final fpga tools
 # We do not support MacPorts only homebrew for the time being...
 #DARWIN_OPT_PATH=/usr/local	# Path in which MacPorts or Fink is installed
 # Set to 'sudo' if you need superuser privileges while installing
-SUDO=
+SUDO=${SUDO:-}
 # Set to 1 to be quieter while running
-QUIET=0
+QUIET=${QUIET:-0}
 # default to not being verbose
-VERBOSE=
+VERBOSE=${VERBOSE:-}
 # Set to 'master' or a git revision number to use instead of stable version
-ICESTORM_EN=1
-ICESTORM_GIT=master
-PRJTRELLIS_EN=1
-PRJTRELLIS_GIT=master
-ARACHNEPNR_EN=1
-ARACHNEPNR_GIT=master
-NEXTPNR_ICE40_EN=1
-NEXTPNR_ECP5_EN=1
-NEXTPNR_GIT=master
-NEXTPNR_BUILD_GUI=on
-YOSYS_EN=1
-YOSYS_GIT=master
-YOSYS_CONFIG=
-IVERILOG_EN=1
-IVERILOG_GIT=v10-branch
+ICESTORM_EN=${ICESTORM_EN:-1}
+ICESTORM_GIT=${ICESTORM_GIT:-master}
+PRJTRELLIS_EN=${PRJTRELLIS_EN:-1}
+PRJTRELLIS_GIT=${PRJTRELLIS_GIT:-master}
+ARACHNEPNR_EN=${ARACHNEPNR_EN:-1}
+ARACHNEPNR_GIT=${ARACHNEPNR_GIT:-master}
+NEXTPNR_ICE40_EN=${NEXTPNR_ICE40_EN:-1}
+NEXTPNR_ECP5_EN=${NEXTPNR_ECP5_EN:-1}
+NEXTPNR_GIT=${NEXTPNR_GIT:-master}
+NEXTPNR_BUILD_GUI=${NEXTPNR_BUILD_GUI:-on}
+YOSYS_EN=${YOSYS_EN:-1}
+YOSYS_GIT=${YOSYS_GIT:-master}
+YOSYS_CONFIG=${YOSYS_CONFIG:-}
+IVERILOG_EN=${IVERILOG_EN:-1}
+IVERILOG_GIT=${IVERILOG_GIT:-v10-branch}
 
 # Override automatic detection of cpus to compile on
-CPUS=
+CPUS=${CPUS:-}
 
 # FTP options ... some environments do not support non-passive FTP
 # FETCH_NO_PASSIVE="--no-passive-ftp "
-FETCH_NO_CERTCHECK="--no-check-certificate "
+FETCH_NO_CERTCHECK=${FETCH_NO_CERTCHECK:-"--no-check-certificate "}
 
 ##############################################################################
 # Parsing command line parameters
