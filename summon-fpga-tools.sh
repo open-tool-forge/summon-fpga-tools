@@ -163,7 +163,7 @@ if [ -f local.sh ]; then
     . ./local.sh
 fi
 
-MAKEFLAGS=${PARALLEL}
+MAKEFLAGS=
 TARFLAGS=v
 
 if [ ${QUIET} != 0 ]; then
@@ -308,6 +308,11 @@ function unpack {
 }
 
 # Install a build
+function install-parallel {
+    log $1
+    ${SUDO} make ${PARALLEL} ${MAKEFLAGS} $2 $3 $4 $5 $6 $7 $8
+}
+
 function install {
     log $1
     ${SUDO} make ${MAKEFLAGS} $2 $3 $4 $5 $6 $7 $8
@@ -395,8 +400,8 @@ if [ ${ICESTORM_EN} != 0 ] && [ ! -e ${STAMPS}/${ICESTORM}.build ]; then
     unpack ${ICESTORM}
     cd ${ICESTORM}
     log "Building ${ICESTORM}"
-    make ${MAKEFLAGS} PREFIX=${PREFIX}
-    install ${ICESTORM} PREFIX=${PREFIX} install
+    make ${PARALLEL} ${MAKEFLAGS} PREFIX=${PREFIX}
+    install-parallel ${ICESTORM} PREFIX=${PREFIX} install
     cd ..
     log "Cleaning up ${ICESTORM}"
     touch ${STAMPS}/${ICESTORM}.build
@@ -411,8 +416,8 @@ if [ ${PRJTRELLIS_EN} != 0 ] && [ ! -e ${STAMPS}/${PRJTRELLIS}.build ]; then
     # to detect the git revision (the .git directory is deleted before archiving)
     cmake -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCURRENT_GIT_VERSION=$(< ../.git_sha) .
     log "Building ${PRJTRELLIS}"
-    make ${MAKEFLAGS}
-    install ${PRJTRELLIS} install
+    make ${PARALLEL} ${MAKEFLAGS}
+    install-parallel ${PRJTRELLIS} install
     cd ../..
     log "Running post install tasks for ${PRJTRELLIS}"
     cd ${PREFIX}/share/trellis
@@ -427,8 +432,8 @@ if [ ${ARACHNEPNR_EN} != 0 ] && [ ! -e ${STAMPS}/${ARACHNEPNR}.build ]; then
     unpack ${ARACHNEPNR}
     cd ${ARACHNEPNR}
     log "Building ${ARACHNEPNR}"
-    make ${MAKEFLAGS} PREFIX=${PREFIX}
-    install ${ARACHNEPNR} PREFIX=${PREFIX} install
+    make ${PARALLEL} ${MAKEFLAGS} PREFIX=${PREFIX}
+    install-parallel ${ARACHNEPNR} PREFIX=${PREFIX} install
     cd ..
     log "Cleaning up ${ARACHNEPNR}"
     touch ${STAMPS}/${ARACHNEPNR}.build
@@ -446,8 +451,8 @@ if { [ ${NEXTPNR_ICE40_EN} != 0 ] || [ ${NEXTPNR_ECP5_EN} != 0 ]; } && [ ! -e ${
         -DTRELLIS_ROOT=${PREFIX}/share/trellis \
         -DICEBOX_ROOT=${PREFIX}/share/icebox ../${NEXTPNR}
     log "Building ${NEXTPNR}"
-    make ${MAKEFLAGS}
-    install ${NEXTPNR} install
+    make ${PARALLEL} ${MAKEFLAGS}
+    install-parallel ${NEXTPNR} install
     cd ..
     log "Cleaning up ${NEXTPNR}"
     touch ${STAMPS}/${NEXTPNR}.build
@@ -462,8 +467,8 @@ if [ ${YOSYS_EN} != 0 ] && [ ! -e ${STAMPS}/${YOSYS}.build ]; then
         cd ${YOSYS}
     fi
     log "Building ${YOSYS}"
-    make ${MAKEFLAGS} ${YOSYSFLAGS} PREFIX=${PREFIX}
-    install ${YOSYS} PREFIX=${PREFIX} install
+    make ${PARALLEL} ${MAKEFLAGS} ${YOSYSFLAGS} PREFIX=${PREFIX}
+    install-parallel ${YOSYS} PREFIX=${PREFIX} install
     cd ..
     log "Cleaning up ${YOSYS}"
     touch ${STAMPS}/${YOSYS}.build
@@ -483,9 +488,7 @@ if [ ${IVERILOG_EN} != 0 ] && [ ! -e ${STAMPS}/${IVERILOG}.build ]; then
     log "Configuring ${IVERILOG}"
     ../${IVERILOG}/configure --prefix=${PREFIX}
     log "Building ${IVERILOG}"
-    make ${MAKEFLAGS}
-    # workaround - ivl makefile doesn't create this dir itself
-    mkdir -p ${PREFIX}/lib/ivl/
+    make ${PARALLEL} ${MAKEFLAGS}
     install ${IVERILOG} install
     cd ..
     log "Cleaning up ${IVERILOG}"
