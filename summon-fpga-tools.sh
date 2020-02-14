@@ -1,5 +1,5 @@
 #!/bin/bash
-# 
+#
 # Summon FPGA Tools build script
 # Written by Piotr Esden-Tempski <piotr@esden.net>, released as public domain.
 #
@@ -8,7 +8,7 @@
 # worldwide. This software is distributed without any warranty.
 #
 # You should have received a copy of the CC0 Public Domain Dedication along
-# with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>. 
+# with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 #
 # TODO: this should be automatically detected and the deps should be installed when needed.
@@ -448,7 +448,7 @@ if { [ ${NEXTPNR_ICE40_EN} != 0 ] || [ ${NEXTPNR_ECP5_EN} != 0 ]; } && [ ! -e ${
     cmake -DARCH="ice40;ecp5" -DCMAKE_INSTALL_PREFIX=${PREFIX} \
         -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} \
         -DBUILD_GUI=${NEXTPNR_BUILD_GUI} \
-        -DTRELLIS_ROOT=${PREFIX}/share/trellis \
+        -DTRELLIS_INSTALL_PREFIX=${PREFIX} \
         -DICEBOX_ROOT=${PREFIX}/share/icebox ../${NEXTPNR}
     log "Building ${NEXTPNR}"
     make ${PARALLEL} ${MAKEFLAGS}
