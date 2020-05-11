@@ -39,8 +39,8 @@ ICESTORM_EN=${ICESTORM_EN:-1}
 ICESTORM_GIT=${ICESTORM_GIT:-master}
 PRJTRELLIS_EN=${PRJTRELLIS_EN:-1}
 PRJTRELLIS_GIT=${PRJTRELLIS_GIT:-master}
-ARACHNEPNR_EN=${ARACHNEPNR_EN:-1}
-ARACHNEPNR_GIT=${ARACHNEPNR_GIT:-master}
+#ARACHNEPNR_EN=${ARACHNEPNR_EN:-1}
+#ARACHNEPNR_GIT=${ARACHNEPNR_GIT:-master}
 NEXTPNR_ICE40_EN=${NEXTPNR_ICE40_EN:-1}
 NEXTPNR_ECP5_EN=${NEXTPNR_ECP5_EN:-1}
 NEXTPNR_GIT=${NEXTPNR_GIT:-master}
@@ -95,7 +95,7 @@ done
 
 DEFAULT_ICESTORM=
 DEFAULT_PRJTRELLIS=
-DEFAULT_ARACHNEPNR=
+#DEFAULT_ARACHNEPNR=
 DEFAULT_NEXTPNR=
 DEFAULT_YOSYS=yosys-0.8
 DEFAULT_IVERILOG_VERSION=v10_2
@@ -103,7 +103,7 @@ DEFAULT_IVERILOG=iverilog-${DEFAULT_IVERILOG_VERSION}
 
 ICESTORM=${ICESTORM:-${DEFAULT_ICESTORM}}
 PRJTRELLIS=${PRJTRELLIS:-${DEFAULT_PRJTRELLIS}}
-ARACHNEPNR=${ARACHNEPNR:-${DEFAULT_ARACHNEPNR}}
+#ARACHNEPNR=${ARACHNEPNR:-${DEFAULT_ARACHNEPNR}}
 NEXTPNR=${NEXTPNR:-${DEFAULT_NEXTPNR}}
 YOSYS=${YOSYS:-${DEFAULT_YOSYS}}${IVERILOG}
 IVERILOG_VERSION=${IVERILOG_VERSION:-${DEFAULT_IVERILOG_VERSION}}
@@ -122,8 +122,8 @@ echo "ICESTORM=$ICESTORM"
 echo "ICESTORM_GIT=$ICESTORM_GIT"
 echo "PRJTRELLIS=$PRJTRELLIS"
 echo "PRJTRELLIS_GIT=$PRJTRELLIS_GIT"
-echo "ARACHNEPNR=$ARACHNEPNR"
-echo "ARACHNEPNR_GIT=$ARACHNEPNR_GIT"
+#echo "ARACHNEPNR=$ARACHNEPNR"
+#echo "ARACHNEPNR_GIT=$ARACHNEPNR_GIT"
 echo "NEXTPNR=$NEXTPNR"
 echo "NEXTPNR_GIT=$NEXTPNR_GIT"
 echo "YOSYS=$YOSYS"
@@ -154,7 +154,7 @@ echo "${CPUS} cpu's detected running make with '${PARALLEL}' flag"
 
 ICESTORMFLAGS=
 PRJTRELLISFLAGS=
-ARACHNEPNRFLAGS=
+#ARACHNEPNRFLAGS=
 NEXTPNRFLAGS=
 YOSYSFLAGS=
 
@@ -350,15 +350,15 @@ if [ ${PRJTRELLIS_EN} != 0 ]; then
 	fi
 fi
 
-if [ ${ARACHNEPNR_EN} != 0 ]; then
-	if [ "x${ARACHNEPNR_GIT}" == "x" ]; then
-		log "There is no arachne-pnr stable release download server yet!"
-		exit 1
-		#fetch ${ARACHNEPNR} https://github.com/YosysHQ/arachne-pnr/archive/${ARACHNEPNR}.tar.bz2
-	else
-		clone arachnepnr ${ARACHNEPNR_GIT} git://github.com/YosysHQ/arachne-pnr.git
-	fi
-fi
+#if [ ${ARACHNEPNR_EN} != 0 ]; then
+#	if [ "x${ARACHNEPNR_GIT}" == "x" ]; then
+#		log "There is no arachne-pnr stable release download server yet!"
+#		exit 1
+#		#fetch ${ARACHNEPNR} https://github.com/YosysHQ/arachne-pnr/archive/${ARACHNEPNR}.tar.bz2
+#	else
+#		clone arachnepnr ${ARACHNEPNR_GIT} git://github.com/YosysHQ/arachne-pnr.git
+#	fi
+#fi
 
 if [ ${NEXTPNR_ICE40_EN} != 0 ] || [ ${NEXTPNR_ECP5_EN} != 0 ]; then
 	if [ "x${NEXTPNR_GIT}" == "x" ]; then
@@ -428,17 +428,17 @@ if [ ${PRJTRELLIS_EN} != 0 ] && [ ! -e ${STAMPS}/${PRJTRELLIS}.build ]; then
     rm -rf build/* ${PRJTRELLIS}
 fi
 
-if [ ${ARACHNEPNR_EN} != 0 ] && [ ! -e ${STAMPS}/${ARACHNEPNR}.build ]; then
-    unpack ${ARACHNEPNR}
-    cd ${ARACHNEPNR}
-    log "Building ${ARACHNEPNR}"
-    make ${PARALLEL} ${MAKEFLAGS} PREFIX=${PREFIX}
-    install-parallel ${ARACHNEPNR} PREFIX=${PREFIX} install
-    cd ..
-    log "Cleaning up ${ARACHNEPNR}"
-    touch ${STAMPS}/${ARACHNEPNR}.build
-    rm -rf ${ARACHNEPNR}
-fi
+#if [ ${ARACHNEPNR_EN} != 0 ] && [ ! -e ${STAMPS}/${ARACHNEPNR}.build ]; then
+#    unpack ${ARACHNEPNR}
+#    cd ${ARACHNEPNR}
+#    log "Building ${ARACHNEPNR}"
+#    make ${PARALLEL} ${MAKEFLAGS} PREFIX=${PREFIX}
+#    install-parallel ${ARACHNEPNR} PREFIX=${PREFIX} install
+#    cd ..
+#    log "Cleaning up ${ARACHNEPNR}"
+#    touch ${STAMPS}/${ARACHNEPNR}.build
+#    rm -rf ${ARACHNEPNR}
+#fi
 
 if { [ ${NEXTPNR_ICE40_EN} != 0 ] || [ ${NEXTPNR_ECP5_EN} != 0 ]; } && [ ! -e ${STAMPS}/${NEXTPNR}.build ]; then
     unpack ${NEXTPNR}
