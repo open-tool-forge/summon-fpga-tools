@@ -421,7 +421,7 @@ if [ ${PRJTRELLIS_EN} != 0 ] && [ ! -e ${STAMPS}/${PRJTRELLIS}.build ]; then
     cd ../..
     log "Running post install tasks for ${PRJTRELLIS}"
     cd ${PREFIX}/share/trellis
-    ln -sf ../../lib/trellis libtrellis
+    ${SUDO} ln -sf ../../lib/trellis libtrellis
     cd -
     log "Cleaning up ${PRJTRELLIS}"
     touch ${STAMPS}/${PRJTRELLIS}.build
