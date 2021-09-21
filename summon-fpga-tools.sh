@@ -346,7 +346,7 @@ if [ ${PRJTRELLIS_EN} != 0 ]; then
 		exit 1
 		#fetch ${PRJTRELLIS} https://github.com/SymbiFlow/prjtrellis/archive/${PRJTRELLIS}.tar.bz2
 	else
-		clone prjtrellis ${PRJTRELLIS_GIT} git://github.com/SymbiFlow/prjtrellis.git
+		clone prjtrellis ${PRJTRELLIS_GIT} git://github.com/YosysHQ/prjtrellis.git
 	fi
 fi
 
