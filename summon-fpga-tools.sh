@@ -50,6 +50,8 @@ YOSYS_GIT=${YOSYS_GIT:-master}
 YOSYS_CONFIG=${YOSYS_CONFIG:-}
 IVERILOG_EN=${IVERILOG_EN:-1}
 IVERILOG_GIT=${IVERILOG_GIT:-v10-branch}
+GHDL_EN=${GHDL_EN:-1}
+GHDL_GIT=${GHDL_GIT:-master}
 
 # Override automatic detection of cpus to compile on
 CPUS=${CPUS:-}
@@ -386,6 +388,14 @@ if [ ${IVERILOG_EN} != 0 ]; then
 	fi
 fi
 
+if [ ${GHDL_EN} != 0 ]; then
+	if [ "x${GHDL_GIT}" == "x" ]; then
+		fetch ${GHDL} https://github.com/ghdl/ghdl/archive/${GHDL_VERSION}.tar.gz ${GHDL}.tar.gz
+	else
+		clone ghdl ${GHDL_GIT} git://github.com/ghdl/ghdl.git
+	fi
+fi
+
 ##############################################################################
 # Build tools
 ##############################################################################
@@ -494,4 +504,18 @@ if [ ${IVERILOG_EN} != 0 ] && [ ! -e ${STAMPS}/${IVERILOG}.build ]; then
     log "Cleaning up ${IVERILOG}"
     touch ${STAMPS}/${IVERILOG}.build
     rm -rf build/* ${IVERILOG}
+fi
+
+if [ ${GHDL_EN} != 0 ] && [ ! -e ${STAMPS}/${GHDL}.build ]; then
+    unpack ${GHDL}
+    cd build
+    log "Configuring ${GHDL}"
+    ../${GHDL}/configure --with-llvm-config --prefix=${PREFIX}
+    log "Building ${GHDL}"
+    make ${PARALLEL} ${MAKEFLAGS}
+    install ${GHDL} install
+    cd ..
+    log "Cleaning up ${GHDL}"
+    touch ${STAMPS}/${GHDL}.build
+    rm -rf build/* ${GHDL}
 fi
