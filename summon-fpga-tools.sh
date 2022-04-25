@@ -336,9 +336,9 @@ if [ ${ICESTORM_EN} != 0 ]; then
 	if [ "x${ICESTORM_GIT}" == "x" ]; then
 		log "There is no icestorm stable release download server yet!"
 		exit 1
-		#fetch ${ICESTORM} https://github.com/cliffordwolf/icestorm/archive/${ICESTORM}.tar.bz2
+		#fetch ${ICESTORM} https://github.com/YosysHQ/icestorm/archive/${ICESTORM}.tar.bz2
 	else
-		clone icestorm ${ICESTORM_GIT} https://github.com/cliffordwolf/icestorm.git
+		clone icestorm ${ICESTORM_GIT} https://github.com/YosysHQ/icestorm.git
 	fi
 fi
 
@@ -346,7 +346,7 @@ if [ ${PRJTRELLIS_EN} != 0 ]; then
 	if [ "x${PRJTRELLIS_GIT}" == "x" ]; then
 		log "There is no prjtrellis stable release download server yet!"
 		exit 1
-		#fetch ${PRJTRELLIS} https://github.com/SymbiFlow/prjtrellis/archive/${PRJTRELLIS}.tar.bz2
+		#fetch ${PRJTRELLIS} https://github.com/YosysHQ/prjtrellis/archive/${PRJTRELLIS}.tar.bz2
 	else
 		clone prjtrellis ${PRJTRELLIS_GIT} https://github.com/YosysHQ/prjtrellis.git
 	fi
