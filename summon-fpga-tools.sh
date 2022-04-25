@@ -338,7 +338,7 @@ if [ ${ICESTORM_EN} != 0 ]; then
 		exit 1
 		#fetch ${ICESTORM} https://github.com/cliffordwolf/icestorm/archive/${ICESTORM}.tar.bz2
 	else
-		clone icestorm ${ICESTORM_GIT} git://github.com/cliffordwolf/icestorm.git
+		clone icestorm ${ICESTORM_GIT} https://github.com/cliffordwolf/icestorm.git
 	fi
 fi
 
@@ -348,7 +348,7 @@ if [ ${PRJTRELLIS_EN} != 0 ]; then
 		exit 1
 		#fetch ${PRJTRELLIS} https://github.com/SymbiFlow/prjtrellis/archive/${PRJTRELLIS}.tar.bz2
 	else
-		clone prjtrellis ${PRJTRELLIS_GIT} git://github.com/YosysHQ/prjtrellis.git
+		clone prjtrellis ${PRJTRELLIS_GIT} https://github.com/YosysHQ/prjtrellis.git
 	fi
 fi
 
@@ -358,7 +358,7 @@ fi
 #		exit 1
 #		#fetch ${ARACHNEPNR} https://github.com/YosysHQ/arachne-pnr/archive/${ARACHNEPNR}.tar.bz2
 #	else
-#		clone arachnepnr ${ARACHNEPNR_GIT} git://github.com/YosysHQ/arachne-pnr.git
+#		clone arachnepnr ${ARACHNEPNR_GIT} https://github.com/YosysHQ/arachne-pnr.git
 #	fi
 #fi
 
@@ -368,7 +368,7 @@ if [ ${NEXTPNR_ICE40_EN} != 0 ] || [ ${NEXTPNR_ECP5_EN} != 0 ]; then
 		exit 1
 		#fetch ${NEXTPNR} https://github.com/YosysHQ/nextpnr/archive/${NEXTPNR}.tar.bz2
 	else
-		clone nextpnr ${NEXTPNR_GIT} git://github.com/YosysHQ/nextpnr.git
+		clone nextpnr ${NEXTPNR_GIT} https://github.com/YosysHQ/nextpnr.git
 	fi
 fi
 
@@ -376,7 +376,7 @@ if [ ${YOSYS_EN} != 0 ]; then
 	if [ "x${YOSYS_GIT}" == "x" ]; then
 		fetch ${YOSYS} https://github.com/YosysHQ/yosys/archive/${YOSYS}.tar.gz
 	else
-		clone yosys ${YOSYS_GIT} git://github.com/YosysHQ/yosys.git
+		clone yosys ${YOSYS_GIT} https://github.com/YosysHQ/yosys.git
 	fi
 fi
 
@@ -384,7 +384,7 @@ if [ ${IVERILOG_EN} != 0 ]; then
 	if [ "x${IVERILOG_GIT}" == "x" ]; then
 		fetch ${IVERILOG} https://github.com/steveicarus/iverilog/archive/${IVERILOG_VERSION}.tar.gz ${IVERILOG}.tar.gz
 	else
-		clone iverilog ${IVERILOG_GIT} git://github.com/steveicarus/iverilog.git
+		clone iverilog ${IVERILOG_GIT} https://github.com/steveicarus/iverilog.git
 	fi
 fi
 
@@ -392,7 +392,7 @@ if [ ${GHDL_EN} != 0 ]; then
 	if [ "x${GHDL_GIT}" == "x" ]; then
 		fetch ${GHDL} https://github.com/ghdl/ghdl/archive/${GHDL_VERSION}.tar.gz ${GHDL}.tar.gz
 	else
-		clone ghdl ${GHDL_GIT} git://github.com/ghdl/ghdl.git
+		clone ghdl ${GHDL_GIT} https://github.com/ghdl/ghdl.git
 	fi
 fi
 
