@@ -71,9 +71,9 @@ documentation](http://www.clifford.at/icestorm/notes_osx.html).
 
 ## To compile the open source FPGA tools:
 
-* `git clone https://github.com/esden/summon-fpga-tools.git`
+* `git clone https://github.com/open-tool-forge/summon-fpga-tools.git`
  or
-* `wget https://github.com/esden/summon-fpga-tools/zipball/master; unzip master`
+* `wget https://github.com/open-tool-forge/summon-fpga-tools/zipball/master; unzip master`
 * `cd summon-fpga-tools`
 * `./summon-fpga-tools.sh`
 * `export PATH=~/sft/bin:$PATH`
